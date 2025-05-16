@@ -1,3 +1,5 @@
+import time
+
 from selene import browser, be, have
 from selene.core.exceptions import TimeoutException
 
@@ -39,8 +41,10 @@ class CartPage:
         browser.element("#year").type(data["year"])
 
     def submit_order(self):
-        # Подтверждение заказа нажатием кнопки "Purchase"
-        browser.element("button.btn-primary").should(be.visible).click()
+        # Ждём появления кнопки "Purchase" внутри модального окна
+        browser.element("#orderModal").should(be.visible)  # ещё раз, для надёжности
+        purchase_button = browser.element("#orderModal .modal-footer .btn-primary")
+        purchase_button.should(be.visible).should(be.enabled).click()
 
     def should_see_success_alert(self):
         # Проверка, что появилось сообщение об успешной покупке

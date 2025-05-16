@@ -3,7 +3,7 @@ from project_test_demoblaze.pages.main_page import MainPage
 from project_test_demoblaze.pages.product_page import ProductPage
 from project_test_demoblaze.pages.cart_page import CartPage
 from allure_commons.types import Severity
-from data import order_data
+from data.order_data import order
 
 @allure.label("owner", "alina oga")
 @allure.tag("UI")
@@ -46,6 +46,6 @@ def test_add_product_and_place_order():
     cart_page.open_cart()
     cart_page.place_order()
     cart_page.should_see_order_modal()
-    cart_page.fill_order_form(order_data)
+    cart_page.fill_order_form(order)
     cart_page.submit_order()
     cart_page.should_see_success_alert()
