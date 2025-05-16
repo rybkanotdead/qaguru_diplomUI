@@ -19,6 +19,10 @@ def test_add_product_to_cart():
     main_page.open_cart()
     main_page.should_have_product_in_cart("Samsung galaxy s6")
 
+@allure.label("owner", "alina oga")
+@allure.tag("UI")
+@allure.severity(Severity.NORMAL)
+@allure.title("Добавление товара в корзину и удаление с корзины")
 def test_add_and_delete_product_from_cart():
     main_page = MainPage()
     product_page = ProductPage()
@@ -34,6 +38,10 @@ def test_add_and_delete_product_from_cart():
     cart_page.delete_product()
     cart_page.should_be_empty()
 
+@allure.label("owner", "alina oga")
+@allure.tag("UI")
+@allure.severity(Severity.NORMAL)
+@allure.title("Добавление товара в корзину и оформление товара")
 def test_add_product_and_place_order():
     main_page = MainPage()
     product_page = ProductPage()

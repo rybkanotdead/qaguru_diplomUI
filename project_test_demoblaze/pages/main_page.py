@@ -109,3 +109,7 @@ class MainPage:
     def should_have_product_in_cart(self, product_name):
         # Ждём, что среди строк с классом success есть строка с текстом product_name
         browser.all('tr.success').element_by(have.text(product_name)).should(be.visible)
+
+    @allure.step('Открываем окно регистрации')
+    def open_sign_up_window(self):
+        browser.element('#signin2').should(be.visible).click()
