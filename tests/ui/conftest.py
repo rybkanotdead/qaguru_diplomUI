@@ -1,64 +1,53 @@
-import allure
 import pytest
-import requests
-from selene import browser
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selene import browser
+from webdriver_manager.chrome import ChromeDriverManager
 
 import config
-from project_test_demoblaze.utils import attach
 
 
 @pytest.fixture(scope='function', autouse=True)
 def browser_management():
     browser.config.base_url = 'https://www.demoblaze.com'
+
     if config.settings.ENVIRONMENT == 'local':
-        browser.config.window_width = 1920
-        browser.config.window_height = 1080
-        options = webdriver.ChromeOptions()
-        browser.config.driver_options = options
-    else:
         options = Options()
-        capabilities = {
+        options.add_argument('--window-size=1920,1080')
+        # options.add_argument('--headless')  # если нужно без UI
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+
+        driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        browser.config.driver = driver
+
+    else:  # remote (Selenoid)
+        options = Options()
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-infobars')
+        options.add_argument('--disable-popup-blocking')
+        options.add_argument('--disable-notifications')
+
+        selenoid_capabilities = {
             'browserName': 'chrome',
-            'browserVersion': '100',
+            'browserVersion': 'latest',
             'selenoid:options': {
                 'enableVNC': True,
-                'enableVideo': True
+                'enableVideo': True,
             }
         }
-        options.capabilities.update(capabilities)
 
-        login = config.settings.SELENOID_LOGIN
-        password = config.settings.SELENOID_PASSWORD
+        options.set_capability('selenoid:options', selenoid_capabilities['selenoid:options'])
 
+        remote_url = f"http://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
         driver = webdriver.Remote(
-            command_executor=f'https://{login}:{password}@selenoid.autotests.cloud/wd/hub',
+            command_executor=remote_url,
             options=options
         )
         browser.config.driver = driver
 
+    browser.config.timeout = 10
+
     yield
-
-    attach.add_screenshot(browser)
-    attach.add_logs(browser)
-    attach.add_html(browser)
-    if config.settings.ENVIRONMENT == 'remote':
-        attach.add_video(browser)
-
     browser.quit()
-
-
-@pytest.fixture(scope='function')
-def api_token():
-    payload = {
-        'username': config.settings.USER_LOGIN,
-        'password': config.settings.API_PASSWORD
-    }
-    with allure.step('Получаем токен авторизации'):
-        response = requests.post(
-            'https://api.demoblaze.com/login',
-            json=payload
-        )
-
-    yield response.text.split()[1][:-1]
