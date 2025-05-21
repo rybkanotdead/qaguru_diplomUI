@@ -3,10 +3,11 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selene import browser
 from webdriver_manager.chrome import ChromeDriverManager
+import logging
 
 import config
 
-
+logger = logging.getLogger((__name__))
 @pytest.fixture(scope='function', autouse=True)
 def browser_management():
     browser.config.base_url = 'https://www.demoblaze.com'
@@ -41,6 +42,9 @@ def browser_management():
         options.set_capability('selenoid:options', selenoid_capabilities['selenoid:options'])
 
         remote_url = f"http://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
+        logger.info(f"remote_url:{remote_url}")
+        print()
+        print(f"remote_url:{remote_url}")
         driver = webdriver.Remote(
             command_executor=remote_url,
             options=options
