@@ -1,4 +1,5 @@
 import os
+import shutil
 import pytest
 from dotenv import load_dotenv
 
@@ -7,7 +8,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.utils import delete_driver
+from webdriver_manager.core.utils import get_cache_dir  # для очистки кэша
 
 from selene.support.shared import browser
 
@@ -52,10 +53,12 @@ def browser_management():
         options.add_argument('--disable-dev-shm-usage')
 
         try:
-            # удаляем кэшированный драйвер, если он поврежден
-            delete_driver(ChromeDriverManager().install())
-        except Exception:
-            pass  # если не найден — продолжаем
+            # вручную удаляем кэш драйвера, если нужно (опционально)
+            cache_dir = get_cache_dir()
+            shutil.rmtree(cache_dir, ignore_errors=True)
+            print(f'[INFO] Cache directory {cache_dir} deleted')
+        except Exception as e:
+            print(f'[WARNING] Could not delete cache: {e}')
 
         driver_path = ChromeDriverManager().install()
         print(f'[INFO] Using ChromeDriver from: {driver_path}')
