@@ -1,13 +1,15 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selene import browser
 from webdriver_manager.chrome import ChromeDriverManager
 import logging
 
-import config
+import config  # импорт твоего конфига с настройками из .env
 
-logger = logging.getLogger((__name__))
+logger = logging.getLogger(__name__)
+
 @pytest.fixture(scope='function', autouse=True)
 def browser_management():
     browser.config.base_url = 'https://www.demoblaze.com'
@@ -19,7 +21,8 @@ def browser_management():
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
 
-        driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=options)
         browser.config.driver = driver
 
     else:  # remote (Selenoid)
@@ -40,11 +43,12 @@ def browser_management():
         }
 
         options.set_capability('selenoid:options', selenoid_capabilities['selenoid:options'])
+        options.set_capability('browserName', selenoid_capabilities['browserName'])
+        options.set_capability('browserVersion', selenoid_capabilities['browserVersion'])
 
         remote_url = f"http://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
-        logger.info(f"remote_url:{remote_url}")
-        print()
-        print(f"remote_url:{remote_url}")
+        logger.info(f"Remote Selenoid URL: {remote_url}")
+
         driver = webdriver.Remote(
             command_executor=remote_url,
             options=options
