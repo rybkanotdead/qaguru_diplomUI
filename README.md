@@ -1,7 +1,7 @@
 # Демонстрационный проект по тестированию UI и API сайта <a target="_blank" href="https://www.demoblaze.com">Product Store</a>
 ![This is an image](images/demoblaze.png)
 
-## Стек технологий:
+## Проект реализован с использованием:
 <img src="images/icons/python_logo_and_wordmark.svg" height="40" width="40"/><img src="images/icons/selenium.png" height="40" width="40"/><img src="images/icons/pytest_logo.svg" height="40" width="40"/><img src="images/icons/selene.png" height="40" width="40" /><img src="images/icons/selenoid.svg" height="40" width="40" /><img src="images/icons/requests.png" height="40" width="40" /><img src="images/icons/jenkins.svg" height="40" width="40" /><img src="images/icons/allure_Report.svg" height="40" width="40" /><img src="images/icons/telegram.svg" height="40" width="40" />
 
 ## Для запуска тестов локально необходимо:
@@ -52,3 +52,20 @@ echo API_PASSWORD='any_api_password' >> .env
 ```
 pytest .
 ```
+## <img title="Jenkins" src="images/icons/jenkins.svg" height="30" width="30"/> Jenkins
+[![Button](https://img.shields.io/badge/Открыть%20сборку-d33732)](https://jenkins.autotests.cloud/job/qaguru_demoblazedip/)
+<details><summary>Результат выполнения</summary>
+<br>
+<details><summary>Общая информация</summary>
+<br>
+<img src="images/allureотчет.png">
+</details>
+<details><summary>Тест-кейсы</summary>
+<br>
+<img src="images/allure.png">
+</details>
+<details><summary>Уведомление в telegram</summary>
+<br>
+<img src="images/telegram.png">
+</details>
+</details>
