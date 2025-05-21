@@ -1,64 +1,63 @@
-import allure
 import pytest
-from selene import browser
 from selenium import webdriver
-from config import settings  # импортируй свой конфиг
-from helpers.web import ui_attach
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from selene import browser
+from webdriver_manager.chrome import ChromeDriverManager
+import logging
+
+import config
+
+logger = logging.getLogger(__name__)
 
 @pytest.fixture(scope='function', autouse=True)
 def browser_management():
-    env = settings.ENVIRONMENT.lower()
-    browser_version = settings.BROWSER_VERSION  # например, 'latest'
-    window_width, window_height = settings.WINDOW_SIZE.split('x')
-    timeout = settings.WEB_TIMEOUT  # например, 10
+    browser.config.base_url = 'https://www.demoblaze.com'
 
-    options = webdriver.ChromeOptions()
-    options.page_load_strategy = 'eager'
-    options.add_argument('--incognito')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--disable-blink-features=AutomationControlled')
-    options.add_argument(
-        '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
-    )
+    if config.settings.ENVIRONMENT == 'local':
+        options = Options()
+        options.add_argument('--window-size=1920,1080')
+        # options.add_argument('--headless')  # если нужен без UI
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
 
-    browser.config.driver_options = options
-    browser.config.base_url = 'https://stepik.org'  # поменяй, если нужно
-    browser.config.window_width = int(window_width)
-    browser.config.window_height = int(window_height)
-    browser.config.timeout = timeout
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=options)
+        browser.config.driver = driver
 
-    if env == 'remote':
-        with allure.step(f"Инициализация удалённого браузера Chrome {browser_version} через Selenoid"):
-            selenoid_caps = {
-                "browserName": "chrome",
-                "browserVersion": browser_version,
-                "selenoid:options": {
-                    "enableVNC": True,
-                    "enableVideo": True
-                }
+    else:  # remote (Selenoid)
+        options = Options()
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-infobars')
+        options.add_argument('--disable-popup-blocking')
+        options.add_argument('--disable-notifications')
+
+        # capabilities для Selenoid
+        capabilities = {
+            'browserName': 'chrome',
+            'browserVersion': 'latest',
+            'selenoid:options': {
+                'enableVNC': True,
+                'enableVideo': True,
             }
-            options.capabilities.update(selenoid_caps)
-            remote_url = (
-                f"https://{settings.SELENOID_LOGIN}:{settings.SELENOID_PASSWORD}"
-                f"@{settings.SELENOID_URL}/wd/hub"
-            )
-            browser.config.driver = webdriver.Remote(
-                command_executor=remote_url,
-                options=options
-            )
-    else:
-        with allure.step("Инициализация локального браузера Chrome"):
-            browser.config.driver = webdriver.Chrome(options=options)
+        }
 
-    yield browser
+        # Передаём capabilities через options.set_capability
+        for key, value in capabilities.items():
+            options.set_capability(key, value)
 
-    ui_attach.add_screenshot(browser)
-    ui_attach.add_html(browser)
-    ui_attach.add_logs(browser)
-    if env == 'remote':
-        ui_attach.add_video_from_selenoid(browser)
+        remote_url = f"http://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
+        logger.info(f"Remote Selenoid URL: {remote_url}")
+
+        driver = webdriver.Remote(
+            command_executor=remote_url,
+            options=options
+        )
+        browser.config.driver = driver
+
+    browser.config.timeout = 10
+
+    yield
 
     browser.quit()
