@@ -64,10 +64,12 @@ pytest .
 <br>
 <img src="images/allure.png">
 </details>
+<details><summary>Видео прохождения тест-кейса</summary>
+<br>
+<img src="images/video.gif"></details>
 <details><summary>Уведомление в telegram</summary>
 <br>
 <img src="images/telegram.png">
-</details>
 </details>
 
 ## <img title="Allure TestOps" src="images/icons/allure-testops.png" height="30" width="30"/> Allure TestOps
