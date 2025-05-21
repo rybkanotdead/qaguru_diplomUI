@@ -24,6 +24,7 @@ def browser_management():
         browser.config.driver = driver
 
     else:  # remote (Selenoid)
+        options = Options()
         caps = {
             'browserName': 'chrome',
             'browserVersion': 'latest',
@@ -35,9 +36,10 @@ def browser_management():
         remote_url = f"https://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
         logger.info(f"Remote Selenoid URL: {remote_url}")
 
+        options.capabilities.update(caps)
         driver = webdriver.Remote(
-            command_executor=remote_url,
-            capabilities=caps
+            command_executor=f"https://user1:1234@selenoid.autotests.cloud/wd/hub",
+            options=options
         )
         browser.config.driver = driver
 
