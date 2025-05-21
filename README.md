@@ -2,7 +2,7 @@
 ![This is an image](images/demoblaze.png)
 
 ## Проект реализован с использованием:
-<img src="images/icons/python_logo_and_wordmark.svg" height="40" width="40"/><img src="images/icons/selenium.png" height="40" width="40"/><img src="images/icons/pytest_logo.svg" height="40" width="40"/><img src="images/icons/selene.png" height="40" width="40" /><img src="images/icons/selenoid.svg" height="40" width="40" /><img src="images/icons/requests.png" height="40" width="40" /><img src="images/icons/jenkins.svg" height="40" width="40" /><img src="images/icons/allure_Report.svg" height="40" width="40" /><img src="images/icons/telegram.svg" height="40" width="40" />
+<img src="images/icons/python_logo_and_wordmark.svg" height="40" width="40"/><img src="images/icons/selenium.png" height="40" width="40"/><img src="images/icons/pytest_logo.svg" height="40" width="40"/><img src="images/icons/selene.png" height="40" width="40" /><img src="images/icons/selenoid.svg" height="40" width="40" /><img src="images/icons/requests.png" height="40" width="40" /><img src="images/icons/jenkins.svg" height="40" width="40" /><img src="images/icons/allure_Report.svg" height="40" width="40" /><img src="images/icons/telegram.svg" height="40" width="40" /><img src="images/icons/allure-testops.png" height="40" width="40" />
 
 ## Для запуска тестов локально необходимо:
 Клонировать репозиторий и перейти в него в командной строке:
@@ -68,4 +68,22 @@ pytest .
 <br>
 <img src="images/telegram.png">
 </details>
+</details>
+
+## <img title="Allure TestOps" src="images/icons/allure-testops.png" height="30" width="30"/> Allure TestOps
+
+[![Button](https://img.shields.io/badge/Открыть%20проект-21c45e)](https://allure.autotests.cloud/project/4763/dashboards)
+<details><summary>Общая информация</summary>
+<br>
+<img src="images/testops.png">
+</details>
+
+<details><summary>Тест-кейсы</summary>
+<br>
+<img src="images/testcase.png">
+</details>
+
+<details><summary>История запусков</summary>
+<br>
+<img src="images/launch.png">
 </details>
