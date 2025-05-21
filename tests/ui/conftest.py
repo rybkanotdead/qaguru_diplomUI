@@ -6,6 +6,7 @@ from selene import browser
 from webdriver_manager.chrome import ChromeDriverManager
 import config
 import logging
+from project_test_demoblaze.utils import attach
 
 logger = logging.getLogger(__name__)
 
@@ -47,3 +48,28 @@ def browser_management():
 
     yield
     browser.quit()
+@pytest.fixture()
+def selenoid_and_attachments():
+    options = Options()
+    selenoid_capabilities = {
+        "browserName": "chrome",
+        "browserVersion": "127.0",
+        "selenoid:options": {
+            "enableVNC": True,
+            "enableVideo": True
+        }
+    }
+
+    options.capabilities.update(selenoid_capabilities)
+    driver = webdriver.Remote(
+        command_executor=f"https://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub",
+        options=options)
+
+    browser.config.driver = driver
+
+    yield
+
+    attach.add_html(browser)
+    attach.add_logs(browser)
+    attach.add_video(browser)
+    attach.add_screenshot(browser)

@@ -1,7 +1,11 @@
 import allure
+import time
 from selene import browser, be, have
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
 from project_test_demoblaze.pages.main_page import MainPage
 from project_test_demoblaze.pages.sign_up_page import SignUpPage
 from data.user_data import generate_user_data
@@ -19,7 +23,22 @@ def test_user_registration():
 
     with allure.step("Открываем главную страницу и модалку регистрации"):
         main_page.open_main_page()
-        browser.element('#signin2').should(be.visible).click()
+
+        # Находим кнопку входа
+        sign_in_button = browser.driver.find_element(By.ID, "signin2")
+
+        # Скроллим к ней
+        ActionChains(browser.driver).move_to_element(sign_in_button).perform()
+
+        # Ждём, пока она станет кликабельной
+        WebDriverWait(browser.driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "signin2"))
+        )
+
+        # Кликаем по кнопке регистрации
+        sign_in_button.click()
+
+        # Проверяем, что открылось модальное окно
         browser.element('#sign-username').should(be.visible)
 
     with allure.step("Заполняем форму регистрации"):
