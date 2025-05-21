@@ -39,7 +39,7 @@ def browser_management():
 
         options.capabilities.update(caps)
         driver = webdriver.Remote(
-            command_executor=f"https://user1:1234@selenoid.autotests.cloud/wd/hub",
+            command_executor=f"https://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub",
             options=options
         )
         browser.config.driver = driver
