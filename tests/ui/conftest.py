@@ -27,7 +27,7 @@ def browser_management():
         options = Options()
         caps = {
             'browserName': 'chrome',
-            'browserVersion': 'latest',
+            'browserVersion': '127.0',
             'selenoid:options': {
                 'enableVNC': True,
                 'enableVideo': True,
