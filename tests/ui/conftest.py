@@ -1,53 +1,60 @@
+import os
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selene import browser
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from selene import browser
+from dotenv import load_dotenv
 
-import config
+load_dotenv()
+
+# Простейшая замена pydantic_settings
+class Settings:
+    ENVIRONMENT = os.getenv('ENVIRONMENT', 'local')
+    USER_LOGIN = os.getenv('USER_LOGIN')
+    USER_PASSWORD = os.getenv('USER_PASSWORD')
+    API_PASSWORD = os.getenv('API_PASSWORD')
+    SELENOID_LOGIN = os.getenv('SELENOID_LOGIN')
+    SELENOID_PASSWORD = os.getenv('SELENOID_PASSWORD')
+
+settings = Settings()
 
 
 @pytest.fixture(scope='function', autouse=True)
 def browser_management():
     browser.config.base_url = 'https://www.demoblaze.com'
 
-    if config.settings.ENVIRONMENT == 'local':
+    if settings.ENVIRONMENT == 'local':
         options = Options()
         options.add_argument('--window-size=1920,1080')
-        # options.add_argument('--headless')  # если нужно без UI
+        # options.add_argument('--headless')  # для запуска без UI
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
 
-        driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=options)
         browser.config.driver = driver
 
-    else:  # remote (Selenoid)
+    elif settings.ENVIRONMENT == 'remote':
         options = Options()
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--disable-infobars')
-        options.add_argument('--disable-popup-blocking')
-        options.add_argument('--disable-notifications')
-
+        options.add_argument('--window-size=1920,1080')
         selenoid_capabilities = {
-            'browserName': 'chrome',
-            'browserVersion': 'latest',
-            'selenoid:options': {
-                'enableVNC': True,
-                'enableVideo': True,
+            "browserName": "chrome",
+            "browserVersion": "100.0",
+            "selenoid:options": {
+                "enableVNC": True,
+                "enableVideo": False
             }
         }
+        options.set_capability("selenoid:options", selenoid_capabilities["selenoid:options"])
+        options.set_capability("browserName", selenoid_capabilities["browserName"])
+        options.set_capability("browserVersion", selenoid_capabilities["browserVersion"])
 
-        options.set_capability('selenoid:options', selenoid_capabilities['selenoid:options'])
-
-        remote_url = f"http://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
-        driver = webdriver.Remote(
-            command_executor=remote_url,
-            options=options
-        )
+        remote_url = f"https://{settings.SELENOID_LOGIN}:{settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
+        driver = webdriver.Remote(command_executor=remote_url, options=options)
         browser.config.driver = driver
 
-    browser.config.timeout = 10
-
     yield
+
     browser.quit()
