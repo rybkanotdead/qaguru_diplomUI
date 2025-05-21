@@ -32,7 +32,7 @@ def browser_management():
                 'enableVideo': True,
             }
         }
-        remote_url = f"http://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
+        remote_url = f"https://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
         logger.info(f"Remote Selenoid URL: {remote_url}")
 
         driver = webdriver.Remote(
