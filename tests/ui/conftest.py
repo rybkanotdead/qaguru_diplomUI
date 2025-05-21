@@ -1,12 +1,11 @@
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from selene import browser
 from webdriver_manager.chrome import ChromeDriverManager
+import config
 import logging
-
-import config  # импорт твоего конфига с настройками из .env
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +16,6 @@ def browser_management():
     if config.settings.ENVIRONMENT == 'local':
         options = Options()
         options.add_argument('--window-size=1920,1080')
-        # options.add_argument('--headless')  # если нужно без UI
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
 
@@ -25,15 +23,8 @@ def browser_management():
         driver = webdriver.Chrome(service=service, options=options)
         browser.config.driver = driver
 
-    else:  # remote (Selenoid)
-        options = Options()
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--disable-infobars')
-        options.add_argument('--disable-popup-blocking')
-        options.add_argument('--disable-notifications')
-
-        selenoid_capabilities = {
+    else:  # remote Selenoid
+        caps = {
             'browserName': 'chrome',
             'browserVersion': 'latest',
             'selenoid:options': {
@@ -41,17 +32,12 @@ def browser_management():
                 'enableVideo': True,
             }
         }
-
-        options.set_capability('selenoid:options', selenoid_capabilities['selenoid:options'])
-        options.set_capability('browserName', selenoid_capabilities['browserName'])
-        options.set_capability('browserVersion', selenoid_capabilities['browserVersion'])
-
-        remote_url = f"https://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
+        remote_url = f"http://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
         logger.info(f"Remote Selenoid URL: {remote_url}")
 
         driver = webdriver.Remote(
             command_executor=remote_url,
-            options=options
+            desired_capabilities=caps
         )
         browser.config.driver = driver
 
