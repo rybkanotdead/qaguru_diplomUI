@@ -46,7 +46,7 @@ def browser_management():
         options.set_capability('browserName', selenoid_capabilities['browserName'])
         options.set_capability('browserVersion', selenoid_capabilities['browserVersion'])
 
-        remote_url = f"http://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
+        remote_url = f"https://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
         logger.info(f"Remote Selenoid URL: {remote_url}")
 
         driver = webdriver.Remote(
