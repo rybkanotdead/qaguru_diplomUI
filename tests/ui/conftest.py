@@ -23,7 +23,7 @@ def browser_management():
         driver = webdriver.Chrome(service=service, options=options)
         browser.config.driver = driver
 
-    else:  # remote Selenoid
+    else:  # remote (Selenoid)
         caps = {
             'browserName': 'chrome',
             'browserVersion': 'latest',
@@ -37,7 +37,7 @@ def browser_management():
 
         driver = webdriver.Remote(
             command_executor=remote_url,
-            desired_capabilities=caps
+            capabilities=caps
         )
         browser.config.driver = driver
 
