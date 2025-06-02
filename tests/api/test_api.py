@@ -2,8 +2,8 @@ import allure
 import jsonschema
 import pytest
 from allure_commons.types import Severity
-
-from project_test_demoblaze import utils
+from base_request import base_request
+from load_json_schema import load_schema
 
 
 @allure.label("owner", "alina oga")
@@ -14,7 +14,7 @@ from project_test_demoblaze import utils
 def test_categories(cat):
     payload = {"cat": cat}
     with allure.step("Отправляем запрос"):
-        response = utils.base_request.post("/bycat", json=payload)
+        response = base_request.post("/bycat", json=payload)
 
     with allure.step("Проверяем статус-код и содержимое"):
         assert response.status_code == 200
@@ -31,7 +31,7 @@ def test_categories(cat):
 def test_categories_validate_json_schema(cat):
     payload = {"cat": cat}
     with allure.step("Отправляем запрос"):
-        response = utils.base_request.post("/bycat", json=payload)
+        response = base_request.post("/bycat", json=payload)
 
     with allure.step("Валидируем JSON-схему"):
-        jsonschema.validate(response.json(), utils.load_schema("list_json_schema.json"))
+        jsonschema.validate(response.json(), load_schema("list_json_schema.json"))

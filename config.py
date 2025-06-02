@@ -1,7 +1,7 @@
 import os
 from typing import Literal
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 
 BASE_DIR = os.path.dirname(__file__)
