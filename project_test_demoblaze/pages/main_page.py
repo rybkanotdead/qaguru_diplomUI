@@ -111,7 +111,10 @@ class MainPage:
     @staticmethod
     @allure.step("Открываем страницу товара Samsung galaxy s6")
     def open_product_s6():
-        browser.element("a.hrefch").should(have.exact_text("Samsung galaxy s6")).click()
+        browser.element("a.hrefch") \
+            .should(be.visible) \
+            .should(have.exact_text("Samsung galaxy s6")) \
+            .click()
 
     @staticmethod
     @allure.step("Открываем корзину")

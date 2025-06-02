@@ -2,7 +2,13 @@
 ![This is an image](images/demoblaze.png)
 
 ## Проект реализован с использованием:
-<img src="images/icons/python_logo_and_wordmark.svg" height="40" width="40"/><img src="images/icons/selenium.png" height="40" width="40"/><img src="images/icons/pytest_logo.svg" height="40" width="40"/><img src="images/icons/selene.png" height="40" width="40" /><img src="images/icons/selenoid.svg" height="40" width="40" /><img src="images/icons/requests.png" height="40" width="40" /><img src="images/icons/jenkins.svg" height="40" width="40" /><img src="images/icons/allure_Report.svg" height="40" width="40" /><img src="images/icons/telegram.svg" height="40" width="40" /><img src="images/icons/allure-testops.png" height="40" width="40" />
+<img src="images/icons/python_logo_and_wordmark.svg" height="40" width="40"/><img src="images/icons/selenium.png" height="40" width="40"/><img src="images/icons/pytest_logo.svg" height="40" width="40"/><img src="images/icons/selene.png" height="40" width="40" /><img src="images/icons/selenoid.svg" height="40" width="40" /><img src="images/icons/requests.png" height="40" width="40" /><img src="images/icons/jenkins.svg" height="40" width="40" /><img src="images/icons/allure_Report.svg" height="40" width="40" /><img src="images/icons/telegram.svg" height="40" width="40" /><img src="images/icons/allure-testops.png" height="40" width="40"/>
+- Дипломный проект выполнен на языке: `Python`
+- Для написания UI-тестов используется фреймворк `Selene`, современная «обёртка» вокруг `Selenium WebDriver`
+- Библиотека модульного тестирования: `PyTest`
+- `Jenkins` выполняет удаленный запуск тестов в графическом интерфейсе. Установки дополнительных приложений на компьютер пользователя не требуется.
+- Фреймворк`Allure Report` собирает графический отчет о прохождении тестов
+- После завершения тестов `Telegram Bot` отправляет в `Telegram` краткий вариант Allure Report
 
 ## Для запуска тестов локально необходимо:
 Клонировать репозиторий и перейти в него в командной строке:
