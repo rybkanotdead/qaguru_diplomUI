@@ -59,7 +59,7 @@ echo API_PASSWORD='any_api_password' >> .env
 pytest .
 ```
 ## <img title="Jenkins" src="images/icons/jenkins.svg" height="30" width="30"/> Jenkins
-[![Button](https://img.shields.io/badge/Открыть%20сборку-d33732)](https://jenkins.autotests.cloud/job/qaguru_demoblazedip/)
+[![Button](https://img.shields.io/badge/Открыть%20сборку-d33732)](https://jenkins.autotests.cloud/job/qaguru_demoblazedip/49/allure/)
 <details><summary>Результат выполнения</summary></details>
 <br>
 <details><summary>Общая информация</summary>
