@@ -33,4 +33,3 @@ def test_monitors_filter():
     main_page.open_main_page()
     main_page.click_category("Monitors")
     main_page.should_have_gadget("Apple monitor 24")
-

@@ -35,7 +35,7 @@ class MainPage:
     @staticmethod
     @allure.step('Открываем страницу товара "{product_name}"')
     def open_product(product_name: str):
-        browser.element('a.hrefch').should(have.exact_text(product_name)).click()
+        browser.element("a.hrefch").should(have.exact_text(product_name)).click()
 
     @staticmethod
     @allure.step("Открываем корзину")
