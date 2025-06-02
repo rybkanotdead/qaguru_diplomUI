@@ -2,8 +2,8 @@ import allure
 import jsonschema
 import pytest
 from allure_commons.types import Severity
-from base_request import base_request
-from load_json_schema import load_schema
+from project_test_demoblaze.api.base_request import base_request
+from project_test_demoblaze.api.load_json_schema import load_schema
 
 
 @allure.label("owner", "alina oga")

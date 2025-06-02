@@ -1,7 +1,7 @@
 import allure
 from allure_commons.types import Severity
 import config
-from base_request import base_request
+from project_test_demoblaze.api.base_request import base_request
 
 
 @allure.label("owner", "alina oga")
