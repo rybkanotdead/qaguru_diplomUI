@@ -10,15 +10,16 @@ from project_test_demoblaze.utils import attach
 
 logger = logging.getLogger(__name__)
 
-@pytest.fixture(scope='function', autouse=True)
-def browser_management():
-    browser.config.base_url = 'https://www.demoblaze.com'
 
-    if config.settings.ENVIRONMENT == 'local':
+@pytest.fixture(scope="function", autouse=True)
+def browser_management():
+    browser.config.base_url = "https://www.demoblaze.com"
+
+    if config.settings.ENVIRONMENT == "local":
         options = Options()
-        options.add_argument('--window-size=1920,1080')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument("--window-size=1920,1080")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
 
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=options)
@@ -27,20 +28,28 @@ def browser_management():
     else:  # remote (Selenoid)
         options = Options()
         caps = {
-            'browserName': 'chrome',
-            'browserVersion': '127.0',
-            'selenoid:options': {
-                'enableVNC': True,
-                'enableVideo': True,
-            }
+            "browserName": "chrome",
+            "browserVersion": "127.0",
+            "selenoid:options": {
+                "enableVNC": True,
+                "enableVideo": True,
+            },
         }
-        remote_url = f"https://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub"
+        remote_url = (
+            f"https://{config.settings.SELENOID_LOGIN}:"
+            f"{config.settings.SELENOID_PASSWORD}"
+            "@selenoid.autotests.cloud/wd/hub"
+        )
         logger.info(f"Remote Selenoid URL: {remote_url}")
 
         options.capabilities.update(caps)
         driver = webdriver.Remote(
-            command_executor=f"https://{config.settings.SELENOID_LOGIN}:{config.settings.SELENOID_PASSWORD}@selenoid.autotests.cloud/wd/hub",
-            options=options
+            command_executor=(
+                f"https://{config.settings.SELENOID_LOGIN}:"
+                f"{config.settings.SELENOID_PASSWORD}"
+                "@selenoid.autotests.cloud/wd/hub"
+            ),
+            options=options,
         )
         browser.config.driver = driver
 

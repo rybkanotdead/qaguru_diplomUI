@@ -5,6 +5,7 @@ from project_test_demoblaze.pages.cart_page import CartPage
 from allure_commons.types import Severity
 from data.order_data import order
 
+
 @allure.label("owner", "alina oga")
 @allure.tag("UI")
 @allure.severity(Severity.NORMAL)
@@ -18,6 +19,7 @@ def test_add_product_to_cart():
     product_page.add_to_cart()
     main_page.open_cart()
     main_page.should_have_product_in_cart("Samsung galaxy s6")
+
 
 @allure.label("owner", "alina oga")
 @allure.tag("UI")
@@ -37,6 +39,7 @@ def test_add_and_delete_product_from_cart():
 
     cart_page.delete_product()
     cart_page.should_be_empty()
+
 
 @allure.label("owner", "alina oga")
 @allure.tag("UI")

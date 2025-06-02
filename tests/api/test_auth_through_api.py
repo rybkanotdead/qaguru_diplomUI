@@ -41,4 +41,3 @@ def test_login_token():
             assert response_json["errorMessage"] == "Wrong password."
         else:
             assert "auth_token" in response_json or "token" in response_json
-

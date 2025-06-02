@@ -1,7 +1,5 @@
 import allure
-from allure import  severity_level
 from allure_commons.types import Severity
-from selene import browser
 
 from config import settings
 from project_test_demoblaze.pages.login_form import LoginForm
@@ -11,11 +9,11 @@ main_page = MainPage()
 login_form = LoginForm()
 
 
-@allure.label('owner', 'alina oga')
-@allure.tag('UI')
-@allure.tag('Authorization')
+@allure.label("owner", "alina oga")
+@allure.tag("UI")
+@allure.tag("Authorization")
 @allure.severity(Severity.BLOCKER)
-@allure.title('Проверяем авторизацию пользователя')
+@allure.title("Проверяем авторизацию пользователя")
 def test_login():
     main_page.open_main_page()
 

@@ -1,17 +1,16 @@
-import time
-
 from selene import browser, be, have
 from selene.core.exceptions import TimeoutException
 
 
 class CartPage:
-
-    def open_cart(self):
+    @staticmethod
+    def open_cart():
         # Переход на страницу корзины
-        browser.open('/cart.html')
-        browser.should(have.url_containing('/cart'))
+        browser.open("/cart.html")
+        browser.should(have.url_containing("/cart"))
 
-    def delete_product(self):
+    @staticmethod
+    def delete_product():
         # Удаление товара из корзины (если он есть)
         try:
             delete_link = browser.element("a[onclick^='deleteItem']")
@@ -19,19 +18,23 @@ class CartPage:
         except TimeoutException:
             print("Элемент удаления не найден — товар, возможно, уже удалён.")
 
-    def should_be_empty(self):
+    @staticmethod
+    def should_be_empty():
         # Проверка, что корзина пуста
         browser.element("#tbodyid").should(have.text(""))
 
-    def place_order(self):
+    @staticmethod
+    def place_order():
         # Нажатие на кнопку "Place Order", открывающую модальное окно
         browser.element("button[data-target='#orderModal']").should(be.visible).click()
 
-    def should_see_order_modal(self):
+    @staticmethod
+    def should_see_order_modal():
         # Проверка, что модальное окно с формой заказа появилось
         browser.element("#orderModal").should(be.visible)
 
-    def fill_order_form(self, data: dict):
+    @staticmethod
+    def fill_order_form(data: dict):
         # Заполнение формы заказа
         browser.element("#name").type(data["name"])
         browser.element("#country").type(data["country"])
@@ -40,12 +43,16 @@ class CartPage:
         browser.element("#month").type(data["month"])
         browser.element("#year").type(data["year"])
 
-    def submit_order(self):
+    @staticmethod
+    def submit_order():
         # Ждём появления кнопки "Purchase" внутри модального окна
         browser.element("#orderModal").should(be.visible)  # ещё раз, для надёжности
         purchase_button = browser.element("#orderModal .modal-footer .btn-primary")
         purchase_button.should(be.visible).should(be.enabled).click()
 
-    def should_see_success_alert(self):
+    @staticmethod
+    def should_see_success_alert():
         # Проверка, что появилось сообщение об успешной покупке
-        browser.element(".sweet-alert").should(have.text("Thank you for your purchase!"))
+        browser.element(".sweet-alert").should(
+            have.text("Thank you for your purchase!")
+        )

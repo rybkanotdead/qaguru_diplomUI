@@ -54,7 +54,7 @@ pytest .
 ```
 ## <img title="Jenkins" src="images/icons/jenkins.svg" height="30" width="30"/> Jenkins
 [![Button](https://img.shields.io/badge/Открыть%20сборку-d33732)](https://jenkins.autotests.cloud/job/qaguru_demoblazedip/)
-<details><summary>Результат выполнения</summary>
+<details><summary>Результат выполнения</summary></details>
 <br>
 <details><summary>Общая информация</summary>
 <br>
@@ -85,7 +85,9 @@ pytest .
 <img src="images/testcase.png">
 </details>
 
-<details><summary>История запусков</summary>
-<br>
-<img src="images/launch.png">
+<details>
+  <summary>История запусков</summary>
+  <p>
+    <img src="images/launch.png" alt="Launch History">
+  </p>
 </details>

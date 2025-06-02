@@ -3,10 +3,12 @@ from typing import Literal
 
 from pydantic import BaseSettings
 
+
 BASE_DIR = os.path.dirname(__file__)
 ENV_PATH = os.path.join(BASE_DIR, '.env')
 
 EnvType = Literal['local', 'remote']
+
 
 class Settings(BaseSettings):
     ENVIRONMENT: EnvType = 'local'
@@ -18,5 +20,6 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ENV_PATH
+
 
 settings = Settings()
