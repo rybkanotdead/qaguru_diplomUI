@@ -47,13 +47,13 @@ class CartPage:
         browser.element("#orderModal").should(be.visible)
 
     @staticmethod
-    def fill_order_form(order: OrderData):
-        browser.element("#name").type(order.name)
-        browser.element("#country").type(order.country)
-        browser.element("#city").type(order.city)
-        browser.element("#card").type(order.credit_card)
-        browser.element("#month").type(order.month)
-        browser.element("#year").type(order.year)
+    def fill_order_form(order: dict):
+        browser.element("#name").type(order["name"])
+        browser.element("#country").type(order["country"])
+        browser.element("#city").type(order["city"])
+        browser.element("#card").type(order["credit_card"])
+        browser.element("#month").type(order["month"])
+        browser.element("#year").type(order["year"])
 
     @staticmethod
     def submit_order():
