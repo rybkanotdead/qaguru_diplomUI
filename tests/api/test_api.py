@@ -9,29 +9,16 @@ from project_test_demoblaze import utils
 @allure.label("owner", "alina oga")
 @allure.tag("API")
 @allure.severity(Severity.BLOCKER)
-@allure.title("Проверяем статус-код при выборе категории")
+@allure.title("Проверяем статус-код и содержимое при выборе категории")
 @pytest.mark.parametrize("cat", ["monitor", "laptops", "phones"])
-def test_categories_status_code(cat):
+def test_categories(cat):
     payload = {"cat": cat}
     with allure.step("Отправляем запрос"):
         response = utils.base_request.post("/bycat", json=payload)
 
-    with allure.step("Проверяем статус-код"):
+    with allure.step("Проверяем статус-код и содержимое"):
         assert response.status_code == 200
-
-
-@allure.label("owner", "alina oga")
-@allure.tag("API")
-@allure.severity(Severity.BLOCKER)
-@allure.title("Проверяем фильтрацию при выборе категории")
-@pytest.mark.parametrize("cat", ["monitor", "laptops", "phones"])
-def test_categories_items(cat):
-    payload = {"cat": cat}
-    with allure.step("Отправляем запрос"):
-        response = utils.base_request.post("/bycat", json=payload)
-
-    body = response.json()
-    with allure.step(f"Проверяем, что вернулась категория {cat}"):
+        body = response.json()
         for item in body["Items"]:
             assert item["cat"] == cat
 

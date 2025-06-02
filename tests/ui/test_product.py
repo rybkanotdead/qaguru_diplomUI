@@ -15,7 +15,7 @@ def test_add_product_to_cart():
     product_page = ProductPage()
 
     main_page.open_main_page()
-    main_page.open_product_s6()
+    main_page.open_product("Samsung galaxy s6")
     product_page.add_to_cart()
     main_page.open_cart()
     main_page.should_have_product_in_cart("Samsung galaxy s6")
@@ -31,7 +31,7 @@ def test_add_and_delete_product_from_cart():
     cart_page = CartPage()
 
     main_page.open_main_page()
-    main_page.open_product_s6()
+    main_page.open_product("Samsung galaxy s6")
     product_page.add_to_cart()
 
     cart_page.open_cart()
@@ -51,12 +51,12 @@ def test_add_product_and_place_order():
     cart_page = CartPage()
 
     main_page.open_main_page()
-    main_page.open_product_s6()
+    main_page.open_product("Samsung galaxy s6")
     product_page.add_to_cart()
 
     cart_page.open_cart()
     cart_page.place_order()
-    cart_page.should_see_order_modal()
+    cart_page.should_be_visible_order_modal()
     cart_page.fill_order_form(order)
     cart_page.submit_order()
     cart_page.should_see_success_alert()

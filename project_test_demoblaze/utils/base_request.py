@@ -4,6 +4,11 @@ import curlify
 import requests
 from allure_commons.types import AttachmentType
 from requests import Session
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+BASE_API_URL = os.getenv("BASE_API_URL")
 
 
 class BaseRequest(Session):
@@ -46,4 +51,4 @@ class BaseRequest(Session):
         return response
 
 
-base_request = BaseRequest("https://api.demoblaze.com")
+base_request = BaseRequest(BASE_API_URL)
