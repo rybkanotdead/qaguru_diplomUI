@@ -1,7 +1,7 @@
 import allure
 from allure_commons.types import Severity
 import config
-from project_test_demoblaze import utils
+from base_request import base_request
 
 
 @allure.label("owner", "alina oga")
@@ -15,7 +15,7 @@ def test_login_status_code():
         "password": config.settings.API_PASSWORD,
     }
     with allure.step("Отправляем запрос"):
-        response = utils.base_request.post("/login", json=payload)
+        response = base_request.post("/login", json=payload)
 
     with allure.step("Проверяем статус-код"):
         assert response.status_code == 200
@@ -32,7 +32,7 @@ def test_login_token():
         "password": config.settings.API_PASSWORD,
     }
     with allure.step("Отправляем запрос"):
-        response = utils.base_request.post("/login", json=payload)
+        response = base_request.post("/login", json=payload)
         response_json = response.json()
         print("Response JSON:", response_json)  # для отладки
 
